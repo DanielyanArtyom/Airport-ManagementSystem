@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace Airport_ManagementSystem
 {
-    class BoardingPass 
+    class BoardingPass : Ticket
     {
-       
+
         List<Ticket> storing = new List<Ticket>(); // for storing and counting ;
-        
-        SeatArea seatPlace = SeatArea.economy; // its by default;
+
+        public BoardingPass(string passengerName, string departureAeroport, string arrivalAeroport) : base(passengerName, departureAeroport, arrivalAeroport)
+        {
+        }
+
 
         public int countTickets()
         {
-           return storing.Count();
+            return storing.Count();
         }
 
         public void storingTickets(Ticket ticket)
@@ -23,7 +26,7 @@ namespace Airport_ManagementSystem
             storing.Add(ticket);
 
         }
-        
+
         public double Threshold()
         {
             double avg = 0;
@@ -32,7 +35,7 @@ namespace Airport_ManagementSystem
 
             for (int i = 0; i < storing.Count(); ++i)
             {
-               if(max < storing[i].BonusPoint())
+                if (max < storing[i].BonusPoint())
                 {
                     max = storing[i].BonusPoint();
                 }
@@ -41,12 +44,37 @@ namespace Airport_ManagementSystem
             for (int i = 0; i < storing.Count(); i++)
             {
                 avg += storing[i].BonusPoint();
-                
+
             }
 
-            threshold = avg + ((max - avg) * 0.25 );
+            threshold = avg + ((max - avg) * 0.25);
 
             return threshold;
+        }
+
+        private DateTime DepartureRandomDay = new DateTime();
+        
+
+
+        public int GateNumber()
+
+        {
+            int gateNumber = gen.Next(1, 15);
+            return gateNumber;
+        }
+        string FlightNumber()
+        {
+            string generator = "abcdefghijklmnopqrstuvwxyz123456789"; // from where i want to put symbol
+
+            int length = 5; // number lenght
+            string random = "";
+            for (int i = 0; i < length; ++i)
+            {
+                int taker = gen.Next(35); // generat random number from 0 to 35;
+                random += generator.ElementAt(taker); // giving random element from generator ;
+            }
+
+            return random;
         }
 
 
@@ -54,7 +82,7 @@ namespace Airport_ManagementSystem
         {
             for (int i = 0; i < storing.Count(); ++i)
             {
-                if(Threshold() < storing[i].BonusPoint())
+                if (Threshold() < storing[i].BonusPoint())
                 {
                     return SeatArea.business;
                 }
@@ -63,20 +91,25 @@ namespace Airport_ManagementSystem
             return SeatArea.economy;
         }
 
-        public void Printing()
+        public void printing()
         {
-            for (int i = 0; i < storing.Count(); i++)
+            foreach (var passanger in storing)
             {
-                Console.WriteLine($"Passanger Name is:{storing[i].passengerName}\n ");
-                Console.WriteLine($"From:{storing[i].departureAeroport} \n");
-                Console.WriteLine($"To:{storing[i].arrivalAeroport}\n ");
-                Console.WriteLine($"Day: {storing[i].RandomDay()}");
-               
-
+                Console.WriteLine();
+                Console.WriteLine($"Passanger Name is: {passanger.passengerName}");
+                Console.WriteLine($"Departure Aeroport is:{passanger.departureAeroport}");
+                Console.WriteLine($"rrival Aeroport is: {passanger.arrivalAeroport}");
+                Console.WriteLine($"Departure Date: {DepartureRandomDay.Hour} : {DepartureRandomDay.Minute}");
+                Console.WriteLine($"Arrival Date :{DepartureRandomDay.AddHours(gen.Next(1, 24))} : {DepartureRandomDay.AddMinutes(gen.Next(1, 60))}");
+                Console.WriteLine($"SeatPlace :{seatingPlace()}");
+                Console.WriteLine($"Gate : {FlightNumber()}");
+                Console.WriteLine($"Gate : {GateNumber()}");
+                Console.WriteLine($"You have : {passanger.BonusPoint()} bonus points");
+                
             }
 
+
         }
-        
 
     }
 }

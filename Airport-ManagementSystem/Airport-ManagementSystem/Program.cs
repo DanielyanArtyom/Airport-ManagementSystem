@@ -10,38 +10,45 @@ namespace Airport_ManagementSystem
     {
         static void Main(string[] args)
         {
-            var boarding = new BoardingPass();
+            Console.WriteLine("Write Departure Aeroport");
+            string departureAeroport = Console.ReadLine();
+
+            Console.WriteLine("Write Arrival Aeroport");
+            string arrivalAeroport = Console.ReadLine();
+
+            Console.WriteLine("Write Passanger Name and Surname");
+            string passengerName = Console.ReadLine();
 
 
-            while(true)
+            var boarding = new BoardingPass(passengerName, departureAeroport, arrivalAeroport);
+
+            var ticket = new BoardingPass(passengerName, departureAeroport, arrivalAeroport);
+
+            boarding.storingTickets(ticket);
+
+            for (int i = 0; ; ++i)
             {
-                Console.WriteLine("If you finished adding passagers Write exit");
+                Console.WriteLine("If you finished adding passangers pls write Exit");
 
-                Console.WriteLine("Write Passanger name\n");
-                string passengerName = Console.ReadLine();
 
-                if (passengerName == "Exit")
+                Console.WriteLine("Write Another Passanger Name and Surname");
+                passengerName = Console.ReadLine();
+
+                if(passengerName == "Exit")
                 {
                     break;
                 }
 
-                Console.WriteLine("Write Departure Aeroport\n");
-                string departureAeroport = Console.ReadLine();
 
-                Console.WriteLine("Write Arrival Aeroport\n");
-                string arrivalAeroport = Console.ReadLine();
-
-                
-
-                
-
-                var ticket = new Ticket(passengerName, departureAeroport, arrivalAeroport);
-
-                boarding.storingTickets(ticket);
+                var ticket_1 = new BoardingPass(passengerName, departureAeroport, arrivalAeroport);
+                boarding.storingTickets(ticket_1);
 
             }
 
-            boarding.Printing();
+            boarding.printing();
+
+
+
 
         }
     }
